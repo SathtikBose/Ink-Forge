@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@layer base {
+  :root {
+    --primary: 236 82% 67%; /* HSL for #6366f1 */
+    --primary-foreground: 0 0% 100%;
+  }
+}
