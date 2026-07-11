@@ -3,6 +3,9 @@ import User from '@/models/User';
 import bcrypt from 'bcryptjs';
 import { login } from '@/lib/auth';
 import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
@@ -30,6 +33,19 @@ export async function POST(req: Request) {
       password: hashedPassword,
       role: userRole,
     });
+
+    if (process.env.RESEND_API_KEY) {
+      try {
+        await resend.emails.send({
+          from: 'Ink Forge <onboarding@resend.dev>',
+          to: email,
+          subject: 'Welcome to Ink Forge!',
+          html: `<p>Hi ${name},</p><p>Welcome to Ink Forge. Start ${userRole === 'WRITER' ? 'writing your amazing blogs' : 'reading and exploring amazing content'} today!</p>`,
+        });
+      } catch (e) {
+        console.error("Failed to send welcome email", e);
+      }
+    }
 
     await login({
       _id: user._id.toString(),

@@ -9,9 +9,36 @@ export default function EditPost({ params }: { params: Promise<{ id: string }> }
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [coverImage, setCoverImage] = useState('');
+  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setCoverImage(data.url);
+      } else {
+        setError(data.error || 'Failed to upload image');
+      }
+    } catch (err) {
+      setError('An error occurred while uploading');
+    }
+    setUploading(false);
+  };
 
   useEffect(() => {
     fetch(`/api/posts/${resolvedParams.id}`)
@@ -20,6 +47,7 @@ export default function EditPost({ params }: { params: Promise<{ id: string }> }
         if (data.post) {
           setTitle(data.post.title);
           setContent(data.post.content);
+          setCoverImage(data.post.coverImage || '');
         } else {
           setError('Post not found');
         }
@@ -34,7 +62,7 @@ export default function EditPost({ params }: { params: Promise<{ id: string }> }
       const res = await fetch(`/api/posts/${resolvedParams.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content, status: 'PUBLISHED' }),
+        body: JSON.stringify({ title, content, coverImage, status: 'PUBLISHED' }),
       });
       
       const data = await res.json();
@@ -97,6 +125,23 @@ export default function EditPost({ params }: { params: Promise<{ id: string }> }
       )}
 
       <div className="space-y-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-400 mb-2">Cover Image (Optional)</label>
+          <div className="flex items-center gap-4">
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={handleImageUpload} 
+              disabled={uploading}
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-500/10 file:text-indigo-400 hover:file:bg-indigo-500/20"
+            />
+            {uploading && <span className="text-sm text-gray-400">Uploading...</span>}
+          </div>
+          {coverImage && (
+            <img src={coverImage} alt="Cover Preview" className="mt-4 w-full h-48 object-cover rounded-xl border border-gray-800" />
+          )}
+        </div>
+
         <div>
           <input
             type="text"

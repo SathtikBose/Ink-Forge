@@ -31,7 +31,11 @@ export async function POST(req: Request) {
       name: user.name,
     });
 
-    return NextResponse.json({ success: true, message: 'Logged in successfully' });
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Logged in successfully',
+      user: { role: user.role }
+    });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

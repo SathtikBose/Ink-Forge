@@ -7,12 +7,21 @@ import { PlusCircle, FileText, Heart, MessageSquare } from 'lucide-react';
 export default function WriterDashboard() {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/posts?status=ALL')
-      .then(res => res.json())
+    fetch('/api/posts?status=ALL&authorId=me')
+      .then(async res => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to fetch posts');
+        return data;
+      })
       .then(data => {
         if (data.posts) setPosts(data.posts);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
         setLoading(false);
       });
   }, []);
@@ -58,7 +67,12 @@ export default function WriterDashboard() {
 
       <h2 className="text-xl font-bold mb-6 border-b border-gray-800 pb-2">Your Posts</h2>
       
-      {loading ? (
+      {error ? (
+        <div className="p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400">
+          <p className="font-semibold mb-1">Error Loading Dashboard</p>
+          <p className="text-sm">{error}</p>
+        </div>
+      ) : loading ? (
         <p className="text-gray-400">Loading posts...</p>
       ) : posts.length === 0 ? (
         <p className="text-gray-400">You haven't written any posts yet. Start writing!</p>

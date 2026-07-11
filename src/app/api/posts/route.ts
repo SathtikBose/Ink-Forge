@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { title, content, status } = await req.json();
+    const { title, content, status, coverImage } = await req.json();
 
     if (!title || !content) {
       return NextResponse.json({ error: 'Title and content are required' }, { status: 400 });
@@ -33,6 +33,7 @@ export async function POST(req: Request) {
     const post = await Post.create({
       title,
       content,
+      coverImage,
       author: session._id,
       status: finalStatus,
       aiFeedback,
@@ -51,8 +52,16 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const authorId = searchParams.get('authorId');
+    let authorId = searchParams.get('authorId');
     const status = searchParams.get('status') || 'PUBLISHED';
+
+    if (authorId === 'me') {
+      const session = await getSession();
+      if (!session) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      authorId = session._id;
+    }
 
     await connectToDatabase();
     

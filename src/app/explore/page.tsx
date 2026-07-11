@@ -27,26 +27,32 @@ export default function Explore() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {posts.map(post => (
-            <Link key={post._id} href={`/posts/${post._id}`} className="group block p-6 rounded-2xl bg-gray-950/50 border border-gray-800 hover:border-indigo-500/50 transition-colors">
-              <h2 className="text-2xl font-bold mb-2 group-hover:text-indigo-400 transition-colors line-clamp-2">
-                {post.title}
-              </h2>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-sm font-bold">
-                  {post.author?.name?.[0]?.toUpperCase() || '?'}
+            <Link key={post._id} href={`/posts/${post._id}`} className="group block rounded-2xl bg-gray-950/50 border border-gray-800 hover:border-indigo-500/50 transition-colors overflow-hidden flex flex-col">
+              {post.coverImage && (
+                <div className="w-full h-48 bg-gray-900 border-b border-gray-800">
+                  <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
-                <span className="text-sm text-gray-400">{post.author?.name || 'Anonymous'}</span>
-                <span className="text-gray-600 mx-1">•</span>
-                <span className="text-sm text-gray-500">{new Date(post.createdAt).toLocaleDateString()}</span>
-              </div>
-              <p className="text-gray-400 line-clamp-3">
-                {/* Strip markdown for excerpt, just showing raw text or fallback */}
-                {post.content.replace(/[#*`>]/g, '')}
-              </p>
-              
-              <div className="flex items-center gap-4 mt-6 text-sm text-gray-500">
-                <div className="flex items-center gap-1">
-                  <span className="text-pink-500">♥</span> {post.likes?.length || 0}
+              )}
+              <div className="p-6 flex-1 flex flex-col">
+                <h2 className="text-2xl font-bold mb-2 group-hover:text-indigo-400 transition-colors line-clamp-2">
+                  {post.title}
+                </h2>
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-sm font-bold">
+                    {post.author?.name?.[0]?.toUpperCase() || '?'}
+                  </div>
+                  <span className="text-sm text-gray-400">{post.author?.name || 'Anonymous'}</span>
+                  <span className="text-gray-600 mx-1">•</span>
+                  <span className="text-sm text-gray-500">{new Date(post.createdAt).toLocaleDateString()}</span>
+                </div>
+                <p className="text-gray-400 line-clamp-3 mb-6 flex-1">
+                  {post.content.replace(/[#*`>]/g, '')}
+                </p>
+                
+                <div className="flex items-center gap-4 text-sm text-gray-500 mt-auto">
+                  <div className="flex items-center gap-1">
+                    <span className="text-pink-500">♥</span> {post.likes?.length || 0}
+                  </div>
                 </div>
               </div>
             </Link>

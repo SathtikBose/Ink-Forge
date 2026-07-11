@@ -18,9 +18,20 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // Auto logic: Redirect logged in users away from auth pages
+  if (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/register') {
+    if (session) {
+      if (session.role === 'WRITER') {
+        return NextResponse.redirect(new URL('/dashboard/writer', request.url));
+      } else {
+        return NextResponse.redirect(new URL('/explore', request.url));
+      }
+    }
+  }
+
   return res || NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/api/posts/:path*'],
+  matcher: ['/dashboard/:path*', '/api/posts/:path*', '/login', '/register'],
 };

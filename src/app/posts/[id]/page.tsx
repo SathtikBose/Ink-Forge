@@ -93,6 +93,12 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
         </div>
       </div>
 
+      {post.coverImage && (
+        <div className="mb-10 w-full rounded-2xl overflow-hidden border border-gray-800">
+          <img src={post.coverImage} alt={post.title} className="w-full max-h-[500px] object-cover" />
+        </div>
+      )}
+
       <div className="prose prose-invert prose-indigo max-w-none mb-12">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
       </div>

@@ -30,7 +30,12 @@ export default function Register() {
       if (!res.ok) {
         setError(data.error || 'Failed to register');
       } else {
-        router.push(role === 'WRITER' ? '/dashboard/writer' : '/');
+        if (role === 'WRITER') {
+          router.push('/dashboard/writer');
+        } else {
+          router.push('/explore');
+        }
+        router.refresh();
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred');

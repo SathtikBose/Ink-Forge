@@ -29,7 +29,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { title, content, status } = await req.json();
+    const { title, content, status, coverImage } = await req.json();
     const resolvedParams = await params;
 
     let finalStatus = status || 'DRAFT';
@@ -56,6 +56,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
     post.title = title || post.title;
     post.content = content || post.content;
+    if (coverImage !== undefined) post.coverImage = coverImage;
     post.status = finalStatus;
     post.aiFeedback = aiFeedback;
     

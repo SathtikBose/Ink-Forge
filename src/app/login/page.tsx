@@ -28,7 +28,11 @@ export default function Login() {
       if (!res.ok) {
         setError(data.error || 'Failed to log in');
       } else {
-        router.push('/'); // Redirecting to home. Wait, if writer, redirect to dashboard.
+        if (data.user?.role === 'WRITER') {
+          router.push('/dashboard/writer');
+        } else {
+          router.push('/explore');
+        }
         router.refresh();
       }
     } catch (err: any) {
