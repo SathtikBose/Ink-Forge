@@ -80,7 +80,7 @@ export default function Settings() {
     <div className="container mx-auto px-4 py-12 max-w-2xl">
       <h1 className="text-3xl font-bold mb-8">Profile Settings</h1>
 
-      <div className="bg-gray-950/50 border border-gray-800 rounded-2xl p-8 mb-8">
+      <div className="bg-surface-elevated/50 border border-surface-border rounded-2xl p-8 mb-8">
         <h2 className="text-xl font-semibold mb-6">Update Profile</h2>
         
         {message && <div className="mb-6 p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400">{message}</div>}
@@ -100,7 +100,7 @@ export default function Settings() {
               {uploading && <span className="text-sm text-gray-400">Uploading...</span>}
             </div>
             {image && (
-              <img src={image} alt="Avatar Preview" className="mt-4 w-20 h-20 object-cover rounded-full border border-gray-800" />
+              <img src={image} alt="Avatar Preview" className="mt-4 w-20 h-20 object-cover rounded-full border border-surface-border" />
             )}
           </div>
 
@@ -111,11 +111,11 @@ export default function Settings() {
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="Leave blank to keep unchanged"
-              className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors text-white"
+              className="w-full px-4 py-2 rounded-lg bg-surface-elevated border border-surface-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-gray-900 dark:text-white"
             />
           </div>
 
-          <div className="pt-4 border-t border-gray-800">
+          <div className="pt-4 border-t border-surface-border">
             <h3 className="text-lg font-medium mb-4">Change Password</h3>
             <div className="space-y-4">
               <div>
@@ -125,7 +125,7 @@ export default function Settings() {
                   value={currentPassword}
                   onChange={e => setCurrentPassword(e.target.value)}
                   placeholder="Required if setting a new password"
-                  className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors text-white"
+                  className="w-full px-4 py-2 rounded-lg bg-surface-elevated border border-surface-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-gray-900 dark:text-white"
                 />
               </div>
               <div>
@@ -135,7 +135,7 @@ export default function Settings() {
                   value={newPassword}
                   onChange={e => setNewPassword(e.target.value)}
                   placeholder="Leave blank to keep current password"
-                  className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors text-white"
+                  className="w-full px-4 py-2 rounded-lg bg-surface-elevated border border-surface-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors text-gray-900 dark:text-white"
                 />
               </div>
             </div>

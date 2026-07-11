@@ -30,41 +30,41 @@ export default function MarkdownEditor({ value, onChange, placeholder = "Write y
   };
 
   return (
-    <div className="w-full rounded-xl overflow-hidden border border-gray-800 bg-gray-950/50 flex flex-col min-h-[500px]">
-      <div className="flex items-center justify-between p-2 border-b border-gray-800 bg-gray-900/50">
+    <div className="w-full rounded-xl overflow-hidden border border-surface-border bg-surface-elevated flex flex-col min-h-[500px]">
+      <div className="flex items-center justify-between p-2 border-b border-surface-border bg-surface/50">
         <div className="flex items-center gap-1">
           <button
             type="button"
             onClick={() => setIsPreview(false)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${!isPreview ? 'bg-indigo-500/20 text-indigo-400' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${!isPreview ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400 hover:bg-surface-border hover:text-gray-900 dark:hover:text-white'}`}
           >
             Write
           </button>
           <button
             type="button"
             onClick={() => setIsPreview(true)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${isPreview ? 'bg-indigo-500/20 text-indigo-400' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${isPreview ? 'bg-primary/10 text-primary' : 'text-gray-600 dark:text-gray-400 hover:bg-surface-border hover:text-gray-900 dark:hover:text-white'}`}
           >
             Preview
           </button>
         </div>
         {!isPreview && (
-          <div className="flex items-center gap-1 bg-gray-950/50 p-1 rounded-lg border border-gray-800">
-            <button type="button" onClick={() => insertText('**', '**')} className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded transition-colors" title="Bold">
+          <div className="flex items-center gap-1 bg-surface p-1 rounded-lg border border-surface-border">
+            <button type="button" onClick={() => insertText('**', '**')} className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-surface-elevated rounded transition-colors" title="Bold">
               <Bold className="w-4 h-4" />
             </button>
-            <button type="button" onClick={() => insertText('_', '_')} className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded transition-colors" title="Italic">
+            <button type="button" onClick={() => insertText('_', '_')} className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-surface-elevated rounded transition-colors" title="Italic">
               <Italic className="w-4 h-4" />
             </button>
-            <div className="w-px h-4 bg-gray-700 mx-1" />
-            <button type="button" onClick={() => insertText('# ', '')} className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded transition-colors" title="Heading 1">
+            <div className="w-px h-4 bg-surface-border mx-1" />
+            <button type="button" onClick={() => insertText('# ', '')} className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-surface-elevated rounded transition-colors" title="Heading 1">
               <Heading1 className="w-4 h-4" />
             </button>
-            <button type="button" onClick={() => insertText('## ', '')} className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded transition-colors" title="Heading 2">
+            <button type="button" onClick={() => insertText('## ', '')} className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-surface-elevated rounded transition-colors" title="Heading 2">
               <Heading2 className="w-4 h-4" />
             </button>
-            <div className="w-px h-4 bg-gray-700 mx-1" />
-            <button type="button" onClick={() => insertText('> ', '')} className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded transition-colors" title="Blockquote">
+            <div className="w-px h-4 bg-surface-border mx-1" />
+            <button type="button" onClick={() => insertText('> ', '')} className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-surface-elevated rounded transition-colors" title="Blockquote">
               <Quote className="w-4 h-4" />
             </button>
           </div>
@@ -75,13 +75,13 @@ export default function MarkdownEditor({ value, onChange, placeholder = "Write y
         {!isPreview ? (
           <textarea
             ref={textareaRef}
-            className="w-full h-full min-h-[450px] p-4 bg-transparent text-gray-100 placeholder-gray-500 resize-none outline-none focus:ring-0"
+            className="w-full h-full min-h-[450px] p-4 bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-500 resize-none outline-none focus:ring-0"
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
           />
         ) : (
-          <div className="w-full h-full min-h-[450px] p-4 bg-gray-950 overflow-y-auto prose prose-invert prose-indigo max-w-none">
+          <div className="w-full h-full min-h-[450px] p-4 bg-surface overflow-y-auto prose prose-lg dark:prose-invert prose-indigo max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {value || '*Nothing to preview...*'}
             </ReactMarkdown>

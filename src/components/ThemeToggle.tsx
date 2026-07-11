@@ -14,13 +14,13 @@ export default function ThemeToggle() {
   }, []);
 
   if (!mounted) {
-    return <div className="w-9 h-9 rounded-lg border border-gray-800" />;
+    return <div className="w-9 h-9 rounded-lg border border-surface-border" />;
   }
 
   return (
     <button
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="p-2 rounded-lg border border-gray-800 hover:bg-gray-800 transition-colors"
+      className="p-2 rounded-lg border border-surface-border hover:bg-surface-elevated transition-colors"
       aria-label="Toggle Dark Mode"
     >
       {theme === 'dark' ? (

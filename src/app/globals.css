@@ -6,9 +6,22 @@
   --color-primary: #6366f1;
   --color-primary-hover: #4f46e5;
   --color-secondary: #06b6d4;
-  --color-surface: #13131b;
-  --color-surface-elevated: #18181b;
-  --color-surface-border: #27272a;
+  --color-surface: var(--color-surface-value);
+  --color-surface-elevated: var(--color-surface-elevated-value);
+  --color-surface-border: var(--color-surface-border-value);
+}
+
+@layer base {
+  :root {
+    --color-surface-value: #ffffff;
+    --color-surface-elevated-value: #f9fafb;
+    --color-surface-border-value: #e5e7eb;
+  }
+  .dark {
+    --color-surface-value: #13131b;
+    --color-surface-elevated-value: #18181b;
+    --color-surface-border-value: #27272a;
+  }
 }
 
 @layer utilities {

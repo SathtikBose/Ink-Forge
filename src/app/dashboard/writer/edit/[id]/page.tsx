@@ -148,7 +148,7 @@ export default function EditPost({ params }: { params: Promise<{ id: string }> }
             placeholder="Post Title..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full text-4xl font-bold bg-transparent border-none outline-none placeholder-gray-600 text-white py-2"
+            className="w-full text-4xl font-bold bg-transparent border-none outline-none placeholder-gray-600 text-gray-900 dark:text-white py-2"
           />
         </div>
         
