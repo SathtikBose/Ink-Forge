@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       post: postId,
       author: session._id,
       content,
-      status: moderation.passed ? 'APPROVED' : 'REJECTED',
+      status: moderation.passed ? 'PUBLISHED' : 'REJECTED',
       aiFeedback: moderation.passed ? '' : moderation.feedback,
     });
 
@@ -52,7 +52,7 @@ export async function GET(req: Request) {
 
     await connectToDatabase();
     
-    const comments = await Comment.find({ post: postId, status: 'APPROVED' })
+    const comments = await Comment.find({ post: postId, status: 'PUBLISHED' })
       .populate('author', 'name image')
       .sort({ createdAt: -1 });
 

@@ -28,7 +28,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
     const moderation = await moderateContent(content, 'COMMENT');
     
-    let status = 'PUBLISHED';
+    let status: 'PUBLISHED' | 'REJECTED' = 'PUBLISHED';
     let aiFeedback = '';
     
     if (!moderation.passed) {
