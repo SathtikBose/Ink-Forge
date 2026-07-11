@@ -59,7 +59,7 @@ export default function WriterDashboard() {
             <div className="p-3 bg-blue-500/10 text-blue-400 rounded-lg"><MessageSquare /></div>
             <div>
               <p className="text-sm text-gray-400">Total Comments</p>
-              <p className="text-2xl font-bold">--</p>
+              <p className="text-2xl font-bold">{posts.reduce((acc, p) => acc + (p.comments?.length || 0), 0)}</p>
             </div>
           </div>
         </div>

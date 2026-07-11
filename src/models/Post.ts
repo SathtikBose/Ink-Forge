@@ -8,6 +8,7 @@ export interface IPost extends Document {
   status: 'DRAFT' | 'PUBLISHED' | 'REJECTED';
   aiFeedback?: string;
   likes: mongoose.Types.ObjectId[];
+  comments: mongoose.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -21,6 +22,7 @@ const postSchema: Schema<IPost> = new Schema(
     status: { type: String, enum: ['DRAFT', 'PUBLISHED', 'REJECTED'], default: 'DRAFT' },
     aiFeedback: { type: String },
     likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
   },
   { timestamps: true }
 );

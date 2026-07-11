@@ -12,20 +12,13 @@ export async function middleware(request: NextRequest) {
     if (!session) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
-    
-    if (request.nextUrl.pathname.startsWith('/dashboard/writer') && session.role !== 'WRITER') {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
+    // Any logged in user can access dashboard
   }
 
   // Auto logic: Redirect logged in users away from auth pages
-  if (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/register') {
+  if (['/login', '/register'].includes(request.nextUrl.pathname)) {
     if (session) {
-      if (session.role === 'WRITER') {
-        return NextResponse.redirect(new URL('/dashboard/writer', request.url));
-      } else {
-        return NextResponse.redirect(new URL('/explore', request.url));
-      }
+      return NextResponse.redirect(new URL('/dashboard/writer', request.url));
     }
   }
 

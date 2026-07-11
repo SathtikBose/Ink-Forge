@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   try {
     const session = await getSession();
-    if (!session || session.role !== 'WRITER') {
+    if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -54,6 +54,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     let authorId = searchParams.get('authorId');
     const status = searchParams.get('status') || 'PUBLISHED';
+    const q = searchParams.get('q');
 
     if (authorId === 'me') {
       const session = await getSession();
@@ -68,6 +69,12 @@ export async function GET(req: Request) {
     const query: any = {};
     if (authorId) query.author = authorId;
     if (status !== 'ALL') query.status = status;
+    if (q) {
+      query.$or = [
+        { title: { $regex: q, $options: 'i' } },
+        { content: { $regex: q, $options: 'i' } }
+      ];
+    }
 
     const posts = await Post.find(query).populate('author', 'name image').sort({ createdAt: -1 });
 

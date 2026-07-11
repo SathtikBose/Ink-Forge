@@ -18,8 +18,11 @@ export default async function Navbar() {
         <div className="flex items-center gap-4">
           {session ? (
             <div className="flex items-center gap-6">
-              <Link href={session.role === 'WRITER' ? '/dashboard/writer' : '/explore'} className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
-                {session.role === 'WRITER' ? 'Dashboard' : 'Explore'}
+              <Link href="/dashboard/writer" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+                Dashboard
+              </Link>
+              <Link href="/explore" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+                Explore
               </Link>
               <Link href="/dashboard/settings" className="flex items-center gap-2 hover:opacity-80 transition-opacity" title="Profile Settings">
                 {session.image ? (

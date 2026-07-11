@@ -27,14 +27,13 @@ export async function POST(req: Request) {
     await login({
       _id: user._id.toString(),
       email: user.email,
-      role: user.role,
       name: user.name,
+      image: user.image,
     });
 
     return NextResponse.json({ 
       success: true, 
-      message: 'Logged in successfully',
-      user: { role: user.role }
+      user: { name: user.name } 
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

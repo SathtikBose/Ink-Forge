@@ -20,7 +20,7 @@ export async function decrypt(input: string): Promise<any> {
   return payload;
 }
 
-export async function login(user: { _id: string; email: string; role: string; name: string }) {
+export async function login(user: { _id: string; email: string; name: string; image?: string }) {
   const session = await encrypt({ ...user });
   
   (await cookies()).set('session', session, {

@@ -14,16 +14,19 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
   const [submittingComment, setSubmittingComment] = useState(false);
   const [commentError, setCommentError] = useState('');
   const [likesCount, setLikesCount] = useState(0);
+  const [hasLiked, setHasLiked] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
     // Fetch post and comments in parallel
     Promise.all([
       fetch(`/api/posts/${resolvedParams.id}`).then(res => res.json()),
-      fetch(`/api/comments?postId=${resolvedParams.id}`).then(res => res.json())
+      fetch(`/api/posts/${resolvedParams.id}/comments`).then(res => res.json())
     ]).then(([postData, commentsData]) => {
       if (postData.post) {
         setPost(postData.post);
         setLikesCount(postData.post.likes?.length || 0);
+        // We'd need session to know if we liked, but for now we'll just check if API returns it
       }
       if (commentsData.comments) setComments(commentsData.comments);
       setLoading(false);
@@ -35,10 +38,17 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
       const res = await fetch(`/api/posts/${resolvedParams.id}/like`, {
         method: 'POST',
       });
+      
+      if (res.status === 401) {
+        setShowLoginModal(true);
+        return;
+      }
+      
       const data = await res.json();
       
       if (res.ok) {
         setLikesCount(data.likesCount);
+        setHasLiked(data.hasLiked);
       } else {
         alert(data.error || 'Failed to like post');
       }
@@ -55,12 +65,18 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
     setCommentError('');
     
     try {
-      const res = await fetch('/api/comments', {
+      const res = await fetch(`/api/posts/${resolvedParams.id}/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ postId: resolvedParams.id, content: newComment }),
+        body: JSON.stringify({ content: newComment }),
       });
       
+      if (res.status === 401) {
+        setShowLoginModal(true);
+        setSubmittingComment(false);
+        return;
+      }
+
       const data = await res.json();
       
       if (!res.ok) {
@@ -105,7 +121,7 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
 
       <div className="flex items-center gap-4 py-6 border-t border-gray-800">
         <button onClick={handleLike} className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-900 hover:bg-gray-800 text-gray-300 transition-colors">
-          <Heart className="w-5 h-5 text-pink-500" /> 
+          <Heart className={`w-5 h-5 transition-colors ${hasLiked ? 'fill-pink-500 text-pink-500' : 'text-pink-500'}`} /> 
           <span>{likesCount} Likes</span>
         </button>
         <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gray-900 text-gray-300">
@@ -153,6 +169,26 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
           )}
         </div>
       </div>
+
+      {showLoginModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gray-900 border border-gray-800 p-8 rounded-2xl max-w-md w-full shadow-2xl">
+            <h2 className="text-2xl font-bold mb-4">Login Required</h2>
+            <p className="text-gray-400 mb-8">You need to be signed in to interact with this post. Join the Ink Forge community!</p>
+            <div className="flex gap-4">
+              <a href="/login" className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white text-center py-2 rounded-lg font-medium transition-colors">
+                Log In
+              </a>
+              <button 
+                onClick={() => setShowLoginModal(false)}
+                className="flex-1 bg-gray-800 hover:bg-gray-700 text-white text-center py-2 rounded-lg font-medium transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

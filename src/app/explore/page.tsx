@@ -2,23 +2,50 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Search } from 'lucide-react';
 
 export default function Explore() {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetch('/api/posts?status=PUBLISHED')
-      .then(res => res.json())
-      .then(data => {
-        if (data.posts) setPosts(data.posts);
-        setLoading(false);
-      });
-  }, []);
+    const fetchPosts = () => {
+      setLoading(true);
+      const query = searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : '';
+      fetch(`/api/posts?status=PUBLISHED${query}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.posts) setPosts(data.posts);
+          setLoading(false);
+        });
+    };
+
+    const delayDebounceFn = setTimeout(() => {
+      fetchPosts();
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-5xl">
-      <h1 className="text-4xl font-bold mb-8">Explore Blogs</h1>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <h1 className="text-4xl font-bold">Explore Blogs</h1>
+        
+        <div className="relative w-full md:w-96">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-gray-500" />
+          </div>
+          <input
+            type="text"
+            placeholder="Search by title or content..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="block w-full pl-10 pr-3 py-2 border border-gray-700 rounded-xl leading-5 bg-gray-900 text-gray-300 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 sm:text-sm transition-colors"
+          />
+        </div>
+      </div>
       
       {loading ? (
         <p className="text-gray-400">Loading amazing content...</p>
@@ -52,6 +79,9 @@ export default function Explore() {
                 <div className="flex items-center gap-4 text-sm text-gray-500 mt-auto">
                   <div className="flex items-center gap-1">
                     <span className="text-pink-500">♥</span> {post.likes?.length || 0}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span>💬</span> {post.comments?.length || 0}
                   </div>
                 </div>
               </div>

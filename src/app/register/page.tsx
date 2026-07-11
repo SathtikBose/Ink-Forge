@@ -9,7 +9,6 @@ export default function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('READER');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -22,7 +21,7 @@ export default function Register() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, role }),
+        body: JSON.stringify({ name, email, password }),
       });
       
       const data = await res.json();
@@ -30,11 +29,7 @@ export default function Register() {
       if (!res.ok) {
         setError(data.error || 'Failed to register');
       } else {
-        if (role === 'WRITER') {
-          router.push('/dashboard/writer');
-        } else {
-          router.push('/explore');
-        }
+        router.push('/dashboard/writer');
         router.refresh();
       }
     } catch (err: any) {
@@ -63,15 +58,10 @@ export default function Register() {
             <label className="block text-sm font-medium text-gray-400 mb-1">Password</label>
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} required className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors" />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">I want to...</label>
-            <select value={role} onChange={e => setRole(e.target.value)} className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors">
-              <option value="READER">Read and Comment</option>
-              <option value="WRITER">Write Blogs</option>
-            </select>
-          </div>
           
-          <button type="submit" disabled={loading} className="w-full bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white font-medium py-2.5 rounded-lg transition-colors mt-6">
+          <button 
+            type="submit" 
+            disabled={loading} className="w-full bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white font-medium py-2.5 rounded-lg transition-colors mt-6">
             {loading ? 'Creating account...' : 'Register'}
           </button>
         </form>

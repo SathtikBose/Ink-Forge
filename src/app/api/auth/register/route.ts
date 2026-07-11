@@ -9,7 +9,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
-    const { name, email, password, role } = await req.json();
+    const { name, email, password } = await req.json();
 
     if (!name || !email || !password) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -25,13 +25,10 @@ export async function POST(req: Request) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const userRole = role === 'WRITER' ? 'WRITER' : 'READER';
-
     const user = await User.create({
       name,
       email,
       password: hashedPassword,
-      role: userRole,
     });
 
     if (process.env.RESEND_API_KEY) {
@@ -40,7 +37,7 @@ export async function POST(req: Request) {
           from: 'Ink Forge <onboarding@resend.dev>',
           to: email,
           subject: 'Welcome to Ink Forge!',
-          html: `<p>Hi ${name},</p><p>Welcome to Ink Forge. Start ${userRole === 'WRITER' ? 'writing your amazing blogs' : 'reading and exploring amazing content'} today!</p>`,
+          html: `<p>Hi ${name},</p><p>Welcome to Ink Forge. Start exploring amazing content today!</p>`,
         });
       } catch (e) {
         console.error("Failed to send welcome email", e);
@@ -50,7 +47,6 @@ export async function POST(req: Request) {
     await login({
       _id: user._id.toString(),
       email: user.email,
-      role: user.role,
       name: user.name,
     });
 
