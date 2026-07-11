@@ -62,40 +62,42 @@ export default function NewPost() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">Create New Post</h1>
+    <div className="container mx-auto px-4 py-12 max-w-4xl">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">Create <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">New Post</span></h1>
         <button 
           onClick={handlePublish}
           disabled={loading || !title || !content}
-          className="bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+          className="bg-primary hover:bg-primary-hover disabled:opacity-50 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] w-full md:w-auto"
         >
           {loading ? 'Publishing...' : 'Publish (AI Checked)'}
         </button>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400">
-          <p className="font-semibold mb-1">Could not publish your post</p>
+        <div className="mb-8 p-5 bg-red-500/10 border border-red-500/20 rounded-xl text-red-600 dark:text-red-400">
+          <p className="font-bold mb-1">Could not publish your post</p>
           <p className="text-sm">{error}</p>
         </div>
       )}
 
-      <div className="space-y-6">
+      <div className="space-y-8 glass-card p-8">
         <div>
-          <label className="block text-sm font-medium text-gray-400 mb-2">Cover Image (Optional)</label>
+          <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">Cover Image (Optional)</label>
           <div className="flex items-center gap-4">
             <input 
               type="file" 
               accept="image/*" 
               onChange={handleImageUpload} 
               disabled={uploading}
-              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-500/10 file:text-indigo-400 hover:file:bg-indigo-500/20"
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-colors"
             />
-            {uploading && <span className="text-sm text-gray-400">Uploading...</span>}
+            {uploading && <span className="text-sm font-medium text-primary animate-pulse">Uploading...</span>}
           </div>
           {coverImage && (
-            <img src={coverImage} alt="Cover Preview" className="mt-4 w-full h-48 object-cover rounded-xl border border-gray-800" />
+            <div className="mt-6 w-full rounded-2xl overflow-hidden border border-surface-border shadow-md">
+              <img src={coverImage} alt="Cover Preview" className="w-full h-64 object-cover" />
+            </div>
           )}
         </div>
 
@@ -105,11 +107,13 @@ export default function NewPost() {
             placeholder="Post Title..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full text-4xl font-bold bg-transparent border-none outline-none placeholder-gray-600 text-white py-2"
+            className="w-full text-4xl md:text-5xl font-extrabold bg-transparent border-none outline-none placeholder-gray-400 dark:placeholder-gray-600 text-gray-900 dark:text-white py-4"
           />
         </div>
         
-        <MarkdownEditor value={content} onChange={setContent} />
+        <div className="min-h-[400px]">
+          <MarkdownEditor value={content} onChange={setContent} />
+        </div>
       </div>
     </div>
   );

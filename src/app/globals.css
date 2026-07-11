@@ -2,9 +2,23 @@
 @plugin "@tailwindcss/typography";
 @custom-variant dark (&:is(.dark *));
 
-@layer base {
-  :root {
-    --primary: 236 82% 67%; /* HSL for #6366f1 */
-    --primary-foreground: 0 0% 100%;
+@theme {
+  --color-primary: #6366f1;
+  --color-primary-hover: #4f46e5;
+  --color-secondary: #06b6d4;
+  --color-surface: #13131b;
+  --color-surface-elevated: #18181b;
+  --color-surface-border: #27272a;
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-surface-elevated/80 backdrop-blur-xl border border-surface-border shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-2xl;
+  }
+  .glass-nav {
+    @apply bg-surface/70 backdrop-blur-xl border-b border-surface-border;
+  }
+  .text-glow {
+    text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
   }
 }

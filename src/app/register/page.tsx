@@ -39,35 +39,37 @@ export default function Register() {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center p-4">
-      <div className="w-full max-w-md p-8 rounded-2xl bg-gray-950/50 border border-gray-800 backdrop-blur-sm">
-        <h1 className="text-2xl font-bold text-center mb-6">Create an Account</h1>
+    <div className="flex-1 flex items-center justify-center p-4 relative min-h-screen">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-surface to-secondary/5 pointer-events-none" />
+      <div className="w-full max-w-md p-10 glass-card relative z-10 overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-primary to-secondary" />
+        <h1 className="text-3xl font-extrabold text-center mb-8 text-gray-900 dark:text-white">Create an Account</h1>
         
-        {error && <div className="mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded text-red-400 text-sm">{error}</div>}
+        {error && <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-600 dark:text-red-400 text-sm font-medium">{error}</div>}
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">Name</label>
-            <input type="text" value={name} onChange={e => setName(e.target.value)} required className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors" />
+            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Name</label>
+            <input type="text" value={name} onChange={e => setName(e.target.value)} required className="w-full px-5 py-3 rounded-xl bg-surface-elevated/50 border border-surface-border text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">Email</label>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors" />
+            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Email</label>
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required className="w-full px-5 py-3 rounded-xl bg-surface-elevated/50 border border-surface-border text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-1">Password</label>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors" />
+            <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Password</label>
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required className="w-full px-5 py-3 rounded-xl bg-surface-elevated/50 border border-surface-border text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm" />
           </div>
           
           <button 
             type="submit" 
-            disabled={loading} className="w-full bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white font-medium py-2.5 rounded-lg transition-colors mt-6">
+            disabled={loading} className="w-full bg-primary hover:bg-primary-hover disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-all mt-8 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98]">
             {loading ? 'Creating account...' : 'Register'}
           </button>
         </form>
         
-        <p className="mt-6 text-center text-sm text-gray-500">
-          Already have an account? <Link href="/login" className="text-indigo-400 hover:text-indigo-300">Log in</Link>
+        <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
+          Already have an account? <Link href="/login" className="text-primary hover:text-primary-hover font-bold transition-colors">Log in</Link>
         </p>
       </div>
     </div>
