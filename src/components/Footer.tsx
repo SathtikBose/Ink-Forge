@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="border-t border-surface-border bg-surface-elevated/30 mt-auto py-10">
       <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-[10px] font-bold">IF</div>
+          <img src="/logo.png" alt="Ink Forge Logo" className="w-6 h-6 rounded-md object-cover" />
           © {new Date().getFullYear()} Ink Forge. Built for the future.
         </div>
         <div className="flex items-center gap-8 text-sm text-gray-500 dark:text-gray-400">

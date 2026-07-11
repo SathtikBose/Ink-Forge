@@ -9,9 +9,7 @@ export default async function Navbar() {
     <nav className="glass-nav sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="text-xl font-bold text-gray-900 dark:text-gray-50 flex items-center gap-3 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white shadow-lg group-hover:shadow-primary/50 transition-shadow">
-            IF
-          </div>
+          <img src="/logo.png" alt="Ink Forge Logo" className="w-9 h-9 rounded-xl shadow-lg group-hover:shadow-primary/50 transition-shadow object-cover" />
           <span className="tracking-tight">Ink Forge</span>
         </Link>
         
