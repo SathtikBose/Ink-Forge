@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeSanitize from 'rehype-sanitize';
 import { Heart, MessageSquare } from 'lucide-react';
 
 export default function PostPage({ params }: { params: Promise<{ id: string }> }) {
@@ -116,7 +117,7 @@ export default function PostPage({ params }: { params: Promise<{ id: string }> }
       )}
 
       <div className="prose prose-invert prose-indigo max-w-none mb-12">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>{post.content}</ReactMarkdown>
       </div>
 
       <div className="flex items-center gap-4 py-6 border-t border-gray-800">

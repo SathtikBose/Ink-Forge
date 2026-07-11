@@ -1,4 +1,6 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
+import './User';
+import './Comment';
 
 export interface IPost extends Document {
   title: string;
