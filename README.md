@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ink Forge ✒️
 
-## Getting Started
+Ink Forge is a premium, AI-moderated blog platform built with Next.js 16. It empowers writers to publish content safely with automated moderation, ensuring a clean and constructive environment for all users. The platform features a stunning glassmorphism design that fully supports light and dark modes out of the box.
 
-First, run the development server:
+## 🌟 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Automated AI Moderation**: Uses advanced Google Gemini AI to automatically screen and moderate user posts and comments for inappropriate content or misinformation before they are published.
+- **Premium Glassmorphism UI**: Beautiful, fully responsive design using Tailwind CSS v4 featuring adaptive light and dark themes, glowing accents, and blurred glass elements.
+- **Markdown Editor**: Integrated markdown support allowing writers to format their posts richly (bold, italic, quotes, code, headers) with an instant live preview.
+- **Stateless Authentication**: Fully secure JWT-based stateless session management using HTTP-only cookies, eliminating the need for heavy server-side sessions.
+- **Unified Roles**: All users can read, explore, write, and engage with content without rigid role restrictions.
+- **Social Engagement**: Users can like, comment, and interact with posts across the platform.
+- **Profile Customization**: Users can easily update their avatars, change display names, and securely manage their passwords.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4, `next-themes` (Dark/Light mode)
+- **Database**: MongoDB & Mongoose
+- **Authentication**: `jose` (JWT encryption), `bcryptjs`
+- **AI Engine**: `@google/genai` (Gemini API)
+- **Content Rendering**: `react-markdown`, `remark-gfm`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+You will need the following installed:
+- Node.js 20+
+- A MongoDB cluster (e.g., MongoDB Atlas)
+- A Google Gemini API Key
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/SathtikBose/Ink-Forge.git
+   cd Ink-Forge
+   ```
 
-## Deploy on Vercel
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Configure Environment Variables:
+   Create a `.env` file in the root of your project and populate it with the following keys:
+   ```env
+   # Database
+   MONGODB_URI=your_mongodb_connection_string
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   # Authentication Secret
+   JWT_SECRET=your_super_secret_jwt_key
+
+   # AI Integration
+   GEMINI_API_KEY=your_gemini_api_key
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📦 Deployment
+
+This project is optimized for deployment on platforms like Render, Vercel, or any Node.js hosting environment.
+
+**For Render Deployment:**
+1. Connect your GitHub repository to Render.
+2. Select **Web Service** and choose the Node environment.
+3. Set the build command to `npm install && npm run build`.
+4. Set the start command to `npm start`.
+5. Add your Environment Variables (`MONGODB_URI`, `JWT_SECRET`, `GEMINI_API_KEY`).
+6. Deploy!
+
+---
+*Built with ❤️ and Next.js*
