@@ -3,7 +3,7 @@ import Post from '@/models/Post';
 import { getSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getSession();
     if (!session) {
