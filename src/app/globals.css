@@ -17,20 +17,37 @@
     --color-surface-elevated-value: #f9fafb;
     --color-surface-border-value: #e5e7eb;
   }
+
   .dark {
     --color-surface-value: #13131b;
     --color-surface-elevated-value: #18181b;
     --color-surface-border-value: #27272a;
   }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-surface-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-600;
+  }
 }
 
 @layer utilities {
   .glass-card {
-    @apply bg-surface-elevated/80 backdrop-blur-xl border border-surface-border shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-2xl;
+    @apply bg-surface-elevated/80 backdrop-blur-xl border border-surface-border shadow-[0_8px_30px_rgb(0, 0, 0, 0.12)] rounded-2xl;
   }
+
   .glass-nav {
     @apply bg-surface/70 backdrop-blur-xl border-b border-surface-border;
   }
+
   .text-glow {
     text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
   }

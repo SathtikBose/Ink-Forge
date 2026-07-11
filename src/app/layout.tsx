@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-white dark:bg-surface text-gray-900 dark:text-gray-100 antialiased min-h-screen flex flex-col transition-colors selection:bg-primary/30 selection:text-primary-foreground`}>
+      <body className={`${inter.className} bg-white dark:bg-surface text-gray-900 dark:text-gray-100 antialiased min-h-screen flex flex-col overflow-x-hidden transition-colors selection:bg-primary/30 selection:text-primary-foreground`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Navbar />
           <main className="flex-1 flex flex-col">
