@@ -28,6 +28,9 @@ export async function PUT(req: Request) {
       if (!currentPassword) {
         return NextResponse.json({ error: 'Current password is required to set a new password' }, { status: 400 });
       }
+      if (!user.password) {
+        return NextResponse.json({ error: 'Cannot change password for this account type' }, { status: 400 });
+      }
       const isMatch = await bcrypt.compare(currentPassword, user.password);
       if (!isMatch) {
         return NextResponse.json({ error: 'Incorrect current password' }, { status: 401 });
