@@ -47,7 +47,6 @@ export async function PUT(req: Request) {
     await login({
       _id: user._id.toString(),
       email: user.email,
-      role: user.role,
       name: user.name,
       image: user.image,
     });
