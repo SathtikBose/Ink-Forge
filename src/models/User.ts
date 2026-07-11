@@ -15,8 +15,15 @@ const userSchema: Schema<IUser> = new Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    image: { type: String },
-    role: { type: String, enum: ['READER', 'WRITER'], default: 'READER' },
+    role: {
+      type: String,
+      enum: ['READER', 'WRITER'],
+      default: 'READER',
+    },
+    image: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true }
 );

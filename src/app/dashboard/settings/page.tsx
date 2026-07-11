@@ -6,9 +6,39 @@ import { useRouter } from 'next/navigation';
 export default function Settings() {
   const router = useRouter();
   const [name, setName] = useState('');
+  const [image, setImage] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  
+  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setImage(data.url);
+      } else {
+        setError(data.error || 'Failed to upload image');
+      }
+    } catch (err) {
+      setError('An error occurred while uploading');
+    }
+    setUploading(false);
+  };
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +50,7 @@ export default function Settings() {
       const res = await fetch('/api/auth/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name, image, currentPassword, newPassword }),
       });
       const data = await res.json();
       
@@ -58,20 +88,62 @@ export default function Settings() {
 
         <form onSubmit={handleUpdateProfile} className="space-y-6">
           <div>
+            <label className="block text-sm font-medium text-gray-400 mb-2">Profile Picture</label>
+            <div className="flex items-center gap-4">
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleImageUpload} 
+                disabled={uploading}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-500/10 file:text-indigo-400 hover:file:bg-indigo-500/20"
+              />
+              {uploading && <span className="text-sm text-gray-400">Uploading...</span>}
+            </div>
+            {image && (
+              <img src={image} alt="Avatar Preview" className="mt-4 w-20 h-20 object-cover rounded-full border border-gray-800" />
+            )}
+          </div>
+
+          <div>
             <label className="block text-sm font-medium text-gray-400 mb-2">Display Name</label>
             <input 
               type="text" 
               value={name}
               onChange={e => setName(e.target.value)}
-              placeholder="Enter new name..."
+              placeholder="Leave blank to keep unchanged"
               className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors text-white"
-              required
             />
+          </div>
+
+          <div className="pt-4 border-t border-gray-800">
+            <h3 className="text-lg font-medium mb-4">Change Password</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Current Password</label>
+                <input 
+                  type="password" 
+                  value={currentPassword}
+                  onChange={e => setCurrentPassword(e.target.value)}
+                  placeholder="Required if setting a new password"
+                  className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">New Password</label>
+                <input 
+                  type="password" 
+                  value={newPassword}
+                  onChange={e => setNewPassword(e.target.value)}
+                  placeholder="Leave blank to keep current password"
+                  className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors text-white"
+                />
+              </div>
+            </div>
           </div>
           
           <button 
             type="submit" 
-            disabled={loading || !name}
+            disabled={loading || (!name && !image && !newPassword)}
             className="bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white px-6 py-2 rounded-lg font-medium transition-colors"
           >
             {loading ? 'Saving...' : 'Save Changes'}
