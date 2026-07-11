@@ -57,9 +57,22 @@ export async function updateSession(request: NextRequest) {
   const session = request.cookies.get('session')?.value;
   if (!session) return;
 
-  const parsed = await decrypt(session);
-  parsed.expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const res = new Response();
-  res.headers.append('Set-Cookie', `session=${await encrypt(parsed)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${7 * 24 * 60 * 60}`);
-  return res;
+  try {
+    const parsed = await decrypt(session);
+    parsed.expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    
+    // Must use NextResponse.next() to pass the request along
+    const res = NextResponse.next();
+    res.cookies.set({
+      name: 'session',
+      value: await encrypt(parsed),
+      httpOnly: true,
+      expires: parsed.expires,
+      sameSite: 'lax',
+      path: '/'
+    });
+    return res;
+  } catch (err) {
+    return;
+  }
 }

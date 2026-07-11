@@ -1,0 +1,95 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function Settings() {
+  const router = useRouter();
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  const handleUpdateProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setMessage('');
+
+    try {
+      const res = await fetch('/api/auth/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name }),
+      });
+      const data = await res.json();
+      
+      if (!res.ok) {
+        setError(data.error || 'Failed to update profile');
+      } else {
+        setMessage('Profile updated successfully!');
+        router.refresh();
+      }
+    } catch (err: any) {
+      setError('An error occurred');
+    }
+    setLoading(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      router.push('/');
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-12 max-w-2xl">
+      <h1 className="text-3xl font-bold mb-8">Profile Settings</h1>
+
+      <div className="bg-gray-950/50 border border-gray-800 rounded-2xl p-8 mb-8">
+        <h2 className="text-xl font-semibold mb-6">Update Profile</h2>
+        
+        {message && <div className="mb-6 p-4 bg-green-500/10 border border-green-500/50 rounded-lg text-green-400">{message}</div>}
+        {error && <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400">{error}</div>}
+
+        <form onSubmit={handleUpdateProfile} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-400 mb-2">Display Name</label>
+            <input 
+              type="text" 
+              value={name}
+              onChange={e => setName(e.target.value)}
+              placeholder="Enter new name..."
+              className="w-full px-4 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors text-white"
+              required
+            />
+          </div>
+          
+          <button 
+            type="submit" 
+            disabled={loading || !name}
+            className="bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+          >
+            {loading ? 'Saving...' : 'Save Changes'}
+          </button>
+        </form>
+      </div>
+
+      <div className="bg-red-950/20 border border-red-900/50 rounded-2xl p-8">
+        <h2 className="text-xl font-semibold mb-2 text-red-400">Account Actions</h2>
+        <p className="text-sm text-gray-500 mb-6">Log out of your account on this device.</p>
+        
+        <button 
+          onClick={handleLogout}
+          className="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-6 py-2 rounded-lg font-medium transition-colors border border-red-500/20"
+        >
+          Sign Out
+        </button>
+      </div>
+    </div>
+  );
+}
